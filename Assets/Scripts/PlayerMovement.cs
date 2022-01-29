@@ -15,6 +15,11 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if ( GlobalState.GetVar<bool>( "teleporting" ) )
+        {
+            return;
+        }
+        
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
 

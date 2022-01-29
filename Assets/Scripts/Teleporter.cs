@@ -22,6 +22,7 @@ public class Teleporter : MonoBehaviour
     // consts
     const string PLAYER_TAG = "Player";
     const float TELEPORTER_COOLDOWN = 1.75f;
+    const float INPUT_LOCK_COOLDOWN = 0.5f;
 
     void Start()
     {
@@ -52,10 +53,13 @@ public class Teleporter : MonoBehaviour
         
         userLocation = userLocation == UserLocation.A ? UserLocation.B : UserLocation.A;
 
+        // don't hold the input for entire duration of teleporter cooldown
+        yield return new WaitForSecondsRealtime( INPUT_LOCK_COOLDOWN );
+        GlobalState.SetVar<bool>( "teleporting", false );
+
         // add a small delay so the user doesn't accidentally teleport back
         yield return new WaitForSecondsRealtime( TELEPORTER_COOLDOWN );
         
-        GlobalState.SetVar<bool>( "teleporting", false );
         m_teleporting = false;
     }
 
